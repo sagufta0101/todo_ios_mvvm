@@ -8,15 +8,26 @@
 import SwiftUI
 
 struct ListItem: View {
+    
+    let item: NameModel
+    
+    
     var body: some View {
         HStack(content: {
-            Image(systemName: "checkmark.circle")
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            Image(systemName: item.isCompleted ? "checkmark.circle":"circle")
+                .foregroundColor(item.isCompleted ? Color.green: Color.red)
+            Text(item.name)
             Spacer()
         })
     }
 }
 
 #Preview {
-    ListItem()
+    let item1 = NameModel(name: "Hitesh", isCompleted: false)
+    let item2 = NameModel(name: "Mushki", isCompleted: true)
+    
+   return Group {
+          ListItem(item: item1)
+          ListItem(item: item2)
+      }
 }

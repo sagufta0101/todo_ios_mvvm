@@ -8,9 +8,19 @@
 import SwiftUI
 
 struct ListView: View {
+    
+  @State  var nameList: [NameModel]=[NameModel(name: "Hitesg", isCompleted: true),
+    NameModel(name: "Mushki", isCompleted: false),
+    NameModel(name: "Huma", isCompleted: true)]
+    
     var body: some View {
         List {
-            ListItem()
+            ForEach(nameList) { item in
+                
+                ListItem(item: item)
+            }
+            .onDelete(perform: deleteItem)
+            .onMove(perform: moveItem)
         }
         .navigationTitle("Todo App")
         .navigationBarItems(
@@ -21,6 +31,13 @@ struct ListView: View {
             Text("Add")
         })
         )
+    }
+    
+    func deleteItem(at:IndexSet){
+        nameList.remove(atOffsets: at)
+    }
+    func moveItem(from:IndexSet,to:Int){
+        nameList.move(fromOffsets: from, toOffset: to)
     }
 }
 
