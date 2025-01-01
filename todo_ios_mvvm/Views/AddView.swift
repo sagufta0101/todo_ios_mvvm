@@ -9,7 +9,10 @@ import SwiftUI
 
 struct AddView: View {
     @State var input:String=""
-    
+    @EnvironmentObject var listViewModel: ListViewModel
+    @Environment(\.presentationMode) var presentationMode
+
+    @State var showAlert:Bool=false
     var body: some View {
         ScrollView {
             VStack {
@@ -19,7 +22,15 @@ struct AddView: View {
                     .background(Color(Color.gray.opacity(0.2)))
                     .cornerRadius(10)
                 
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Button(action: {
+                    if (input.count>4) {
+                        listViewModel.addItem(item: input)
+                        presentationMode.wrappedValue.dismiss()
+                    }else{
+                        showAlert.toggle()
+                    }
+                  
+                }, label: {
                     Text("Save".uppercased())
                 })
                 .frame(height: 55)
@@ -32,6 +43,9 @@ struct AddView: View {
                 
         }
         .navigationTitle("Add Task")
+        .alert(isPresented: $showAlert, content: {
+           Alert(title:  Text("Atleast 3 character required"))
+        })
 
     }
 }
@@ -41,5 +55,6 @@ struct AddView: View {
     NavigationView{
         AddView()
         }
+    .environmentObject(ListViewModel())
     }
 
